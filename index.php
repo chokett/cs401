@@ -1,10 +1,4 @@
-<<<<<<< HEAD
-<?php $thisPage = 'Home';
-?>
-
 <?php require_once('phpincludes/header.php'); ?>
-<?php require_once('phpincludes/nav.php'); ?>
-<?php require_once('phpincludes/forms.php'); ?>
 	<!DOCTYPE html>
 	<html>
 	<head>
