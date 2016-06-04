@@ -1,10 +1,10 @@
+<<<<<<< HEAD
 <?php $thisPage = 'Home';
 ?>
 
 <?php require_once('phpincludes/header.php'); ?>
 <?php require_once('phpincludes/nav.php'); ?>
 <?php require_once('phpincludes/forms.php'); ?>
-  <div class="content">
 	<!DOCTYPE html>
 	<html>
 	<head>
@@ -48,7 +48,6 @@
 </form>
 </div>
 
-<div class="content">
 <article>
 <hr>
 <h1>Event Calendar</h1><br>
@@ -57,7 +56,6 @@
 <h1>Blogs</h1><br>
 <h1>Member Page</h1><br>
 </article>
-</div>
 
 <?php include("footer.html");?>
 
