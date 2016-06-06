@@ -11,6 +11,7 @@ function preset($key) {
 	}
 }
 
+
 /**
  * Prints error for given key (if one exists).
  */
@@ -36,12 +37,13 @@ function clearErrors() {
 	<title>Registration</title>
 </head>
 <body>
+
 <section>
-<div class="form">
+<div id="regform">
 	<form method="POST" action="registration-handler.php" autocomplete="off">
 	<fieldset>
 		<legend>Registration</legend>
-		<p><label for="fullName" style="display:block">Your Name:</label>
+		<p><label for="fullName" style="display:block" required>User Name:</label>
 		<input type="text" id="fullName" name="fullName" maxlength="50"required <?php preset('fullName'); ?>
 		<?php displayError('fullName'); ?></p>
 		<p><label for="email" style="display:block" required>Email:</label>
@@ -53,12 +55,14 @@ function clearErrors() {
 		<p><label for="password_match" style="display:block"required>Password again:</label>
 		<input type="password" id="password_match" name="password_match">
 		<?php displayError('password_match'); ?></p>
-		<input type="submit" value="Register">
-  		<input type="submit" value="Log In">
+		
+        <input type="submit" value="Register">
+  		<input type="button" value="Log In">
 	</fieldset>
 	</form>
 </div>
 </section>
+
 
 <div class="content">
 <article>

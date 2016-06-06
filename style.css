@@ -1,8 +1,5 @@
 
 body {
-  padding: 0;
-  margin: 0;
-/*  background-color: #EFEFEF;*/ 
   background-color: #A7BDD3;
 }
 
@@ -20,13 +17,12 @@ body {
     font-weight: bold;
 }
 
-
 div.login > button {
   margin: 10px;
 }
 
 div#navigation {
-	clear: both;
+  clear: both;
   width: 95%;
   margin-left: auto;
   margin-right: auto;
@@ -68,32 +64,32 @@ div#navigation {
 }
 
 div.content {
-  padding-top: 0px;
   clear: both;
   background-color: #fefefe;
   border: 1px solid #999;
   padding: 2.5%;
 }
 
-	
 
-form > fieldset {
-  margin-top: 40px;
-  margin: 1%;
+fieldset{
+ margin: 1.5%;
  display: inline; 
+ background-color: #D9853B
 }
 
-label  {
+fieldset > label  {
   display:block;
+  margin-top: 0px;  
 }
-input{
+form > input{
   display:inline-block;
 }
 
-form .submit {
-  margin-top: 15px;
-  text-align: center;
+form > legend{
+    display: inline;   
 }
+
+
 
 
 #footer {
