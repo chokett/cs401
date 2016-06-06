@@ -1,20 +1,12 @@
-<?php include("header.php"); ?>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>UNI-que Blog</title>
-  <meta name="description" content="This is a blog for UNI-que members" />
-  <meta name="keywords" content="Fun, Awesomeness, Help" />
-  <link href="images/favicon.ico" type="image/x-icon" rel="shortcut icon" />
-  <link href="css/blog-style.css" type="text/css" rel="stylesheet" />
-</head>
-<body>
-  <img id="logo" src="images/logo.png" alt="logo" />
-  <h1 id="welcome-message">Welcome to our blog. </h1>
+<?php $thisPage = 'Blog'; ?>
+<?php require_once('includes/header.php'); ?>
+<?php require_once('includes/navigation.php'); ?> 
+
+  <div class="content">  
+ <h1>Welcome to the blog page. </h1>
   <h2>UNI-que is happening</h2>
 
-  <p class="important">  
-  </p>
+  </div>
 
   <h2>Things are happening in Boise &hearts;</h2>
   <p>
@@ -28,6 +20,7 @@
 
   <h3>Things and stuff</h3><br>
 
-  <?php include("footer.html");?>
   </body>
 </html>
+
+<?php require_once('includes/footer.php'); ?>

@@ -1,0 +1,102 @@
+
+body {
+  background-color: #A7BDD3;
+}
+
+#header > table , th, td{
+  vertical-align: middle;
+  padding-left: 15px;
+}
+
+#header > div.logo {
+  float: left;
+}
+
+#header > div.text {
+    font-size: 2em;
+    font-weight: bold;
+}
+
+div.login > button {
+  margin: 10px;
+}
+
+div#navigation {
+  clear: both;
+  width: 95%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 10px;
+}
+
+#navigation ul {
+  list-style: none;
+  margin:0;
+}
+
+#navigation li {
+  background: #ccc;
+  border-left: 1px solid #999;
+  border-right: 1px solid #999;
+  border-top: 1px solid #999;
+  float: left;
+  margin: 0;
+  padding: 8px 0px;
+  border-radius: 10px 10px 0px 0px;
+}
+
+#navigation a {
+  color: #666;
+  font-weight: bold;
+  padding: 8px 20px;
+  text-decoration: none;
+}
+
+#navigation a:hover {
+  color: #333;
+}
+
+#navigation #currentpage > a {
+  background: #fefefe;
+  border-bottom: 2px solid #fefefe;
+  color: #333;
+  border-radius: 8px 10px 0px 0px;
+}
+
+div.content {
+  clear: both;
+  background-color: #fefefe;
+  border: 1px solid #999;
+  padding: 2.5%;
+}
+
+
+fieldset{
+ margin: 1.5%;
+ display: inline; 
+ background-color: #D9853B
+}
+
+fieldset > label  {
+  display:block;
+  margin-top: 0px;  
+}
+form > input{
+  display:inline-block;
+}
+
+form > legend{
+    display: inline;   
+}
+
+
+
+
+#footer {
+  clear: both;
+	text-align: center;
+}
+
+.error{
+        color: red;
+}
