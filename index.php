@@ -1,6 +1,9 @@
 <?php $thisPage = 'Home'; 
-require_once('includes/header.php'); 
 session_start();
+require_once('includes/Dao.php');
+require_once('includes/header.php'); 
+
+
 
 /**
  * Prints preset for given key (if one exists).
@@ -43,18 +46,29 @@ function clearErrors() {
 	<form method="POST" action="registration-handler.php" autocomplete="off">
 	<fieldset>
 		<legend>Registration</legend>
-		<p><label for="fullName" style="display:block" required>User Name:</label>
-		<input type="text" id="fullName" name="fullName" maxlength="50"required <?php preset('fullName'); ?>
-		<?php displayError('fullName'); ?></p>
-		<p><label for="email" style="display:block" required>Email:</label>
-		<input type="email" id="email" name="email" <?php preset('email'); ?> >
-		<?php displayError('email'); ?></p>
-		<p><label for="password" style="display:block" required>Password:</label>
-		<input type="password" id="password" name="password">
-		<?php displayError('password'); ?></p>
-		<p><label for="password_match" style="display:block"required>Password again:</label>
-		<input type="password" id="password_match" name="password_match">
-		<?php displayError('password_match'); ?></p>
+		<p>
+			<label for="name">User Name:</label>
+			<input type="text" id="name" name="name" maxlength="50" value=<?= $_SESSION['presets']['name'] ?>>
+			<?php displayError('name'); ?>
+
+			
+		</p>
+		<p>
+			<label for="email">Email:</label>
+			<input type="email" id="email" name="email" value=<?= $_SESSION['presets']['email'] ?>>
+			<?php displayError('email'); ?>
+			<?php displayError('userexists'); ?>
+		</p>
+		<p>
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password">
+			<?php displayError('password'); ?>
+		<p>
+		<p>
+			<label for="password_match" style="display:block" required>Password again:</label>
+			<input type="password" id="password_match" name="password_match">
+			<?php displayError('password_match'); ?>
+		</p>
 		
         <input type="submit" value="Register">
   		<input type="button" value="Log In">
@@ -85,6 +99,8 @@ function clearErrors() {
 </section>
 
 <?php require_once('includes/footer.php');  
-clearErrors(); ?>
+clearErrors(); 
+//session_destroy();
+?>
 
 

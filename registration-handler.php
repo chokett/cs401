@@ -1,15 +1,18 @@
 <?php 
 session_start();
+require_once('includes/Dao.php');
+$dao = new Dao();
 
-$fullName = htmlspecialchars($_POST['fullName']);
+
+$name = htmlspecialchars($_POST['name']);
 $email = htmlspecialchars($_POST['email']);
 $password = htmlspecialchars($_POST['password']);
 $password_match = htmlspecialchars($_POST['password_match']);
 
 $errors = array();
 
-if(!valid_length($fullName, 1, 50)) {
-	$errors['fullName'] = "Full name is required. Must be less than 50 characters.";
+if(!valid_length($name, 1, 50)) {
+	$errors['name'] = "Full name is required. Must be less than 50 characters.";
 }
 
 if(!valid_length($email, 1, 50)) {
@@ -29,15 +32,28 @@ function valid_length($field, $min, $max) {
 	return (strlen($trimmed) >= $min && strlen($trimmed) <= $max);
 }
 
-// redirect the user if valid.
-if(empty($errors)) {
-	$_SESSION['user'] = htmlspecialchars($fullName);
+
+if(empty($errors)) {	
+	if($dao->userExists($email)){
+		$_SESSION['errors']['userexists'] = "Email already exists";
+		header('Location: index.php');
+	} 
+	else {
+		if($dao->addUser($email, $password, $name)){
+			header('Location: welcome.php');
+		} 
+			
+	$_SESSION['errors']['another_error'] = "couldn't add";
+	header('Location: index.php');
+	}	
 	header('Location: welcome.php');
-} else {
+}
+else{
 	$_SESSION['errors'] = $errors;
-	$_SESSION['presets'] = array('fullName' => htmlspecialchars($fullName),
-					'email' => htmlspecialchars($email));
+	$_SESSION['presets'] = array('name' => htmlspecialchars($name),
+					'email' => htmlspecialchars($email));			
 	header('Location: index.php');
 }
+
 ?>
 

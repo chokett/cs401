@@ -9,7 +9,7 @@ class Dao
 	private $host ="localhost";
 	private $dbname = "webdev";
 	private $user = "csstudent";
-	private $password = "w3bD3vSQLdb";
+	private $password = "Asdfpl137979";
 
 	/**
 	 * Creates a new PDO connection and returns the handle.
@@ -21,9 +21,54 @@ class Dao
 						"$this->user", "$this->password");
 		// Make sure to turn on exceptions for debugging.
 		$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		
 		return $conn;
 	}
+	
+	public function getUsers()
+	{
+		$conn = $this->getConnection();
+		return $conn->query("SELECT * FROM users");
+		
+	}
 
+	
+	public function userExists($email)
+	{
+		$conn = $this->getConnection();
+		$stmt = $conn->prepare("SELECT * FROM users WHERE email = :email");
+		$stmt->bindParam(':email', $email);
+		$stmt->execute();
+		//var_dump($stmt);
+		if($stmt->fetch()) {
+			return true;
+		} else{
+			return false;
+		}
+	}
+
+
+	public function addUser($email, $password, $name)
+	{
+		$conn = $this->getConnection();
+		$query = "INSERT INTO users (email, password, name) 
+				  VALUES (:email, :password, :name)";
+		
+		$stmt = $conn->prepare($query);		
+		$stmt->bindParam(':email', $email);
+		$stmt->bindParam(':password', $password);
+		$stmt->bindParam(':name', $name);
+
+		try{
+			$stmt->execute();
+			return true;
+		} catch(PDOException $e) {
+			echo $e->getMessage();
+
+			return false;
+		}
+	}
+ 
 	/**
 	 * Returns all rows in the test table. No user input.
 	 */

@@ -1,7 +1,8 @@
 <?php $thisPage = 'Home';
+session_start(); 
         require_once('includes/header.php');
         require_once('includes/navigation.php');
-session_start(); ?>
+?>
 <!DOCTYPE html>
 <html>
 <body>
