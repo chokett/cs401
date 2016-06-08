@@ -3,7 +3,10 @@ session_start();
 require_once('includes/Dao.php');
 require_once('includes/header.php'); 
 
-
+if(isset($_SESSION['error'])) {
+	$error = $_SESSION['error'];
+	unset($_SESSION['error']); // clear so gone when page is refreshed.
+}
 
 /**
  * Prints preset for given key (if one exists).
@@ -88,13 +91,59 @@ function clearErrors() {
 </div>
 
 <section>
-	<h3>Search our site</h3>
-	<form id="searchForm" action="search-handler.php">
-		<label for="query">Enter search string:</label>
-		<input type="text" id="query" name="query">
-		<input type="submit">
-	</form>
-</section>
+		<!-- Filter form will just submit to itself. This is okay on a GET request -->
+		<form method="GET">
+			<p>
+				<label>Filter by email:
+				<input type="text" name="email" required>
+				</label>
+				<input type="submit" name="filterButton" value="Filter">
+			</p>
+		</form>
+	</section>
+	
+	<section>
+		<h1>Search Results</h1>
+		<?php
+		// filter results if email parameter is present in URL, otherwise, display
+		// all results.
+		if(isset($_GET['email']))
+		{
+			$email = htmlspecialchars($_GET['email']);
+			try {
+				$dao = new Dao();
+				$results = $dao->getRow($email);
+				printResultTable($results);
+			} catch (PDOException $e) {
+				echo $e->getMessage(); // only print this during development. Don't print in production.
+				echo "<p>Failed to filter data. Please come back later.</p>";
+			}
+		} else {
+			try {
+				$dao = new Dao();
+				$results = $dao->getAllRows();
+				printResultTable($results);
+			} catch (PDOException $e) {
+				echo $e->getMessage(); // only print this during development. Don't print in production.
+				echo "<p>Failed to retrieve data. Please come back later.</p>";
+			}
+		}
+	
+		function printResultTable($rows) {
+			if(!empty($rows)) { ?>
+				<table>
+				<?php foreach($rows as $row) {?>
+					<tr><td><?= $row['email'] ?></td></tr>
+				<?php }?>
+				</table>
+			<?php } else { ?>
+				<p>No results.</p>
+			<?php }
+		}
+		?>
+	</section>
+</body>
+</html>
 
 <?php require_once('includes/footer.php');  
 clearErrors(); 

@@ -1,26 +1,83 @@
 <?php $thisPage = 'Blog'; ?>
 <?php require_once('includes/header.php'); ?>
 <?php require_once('includes/navigation.php'); ?> 
+<?php
+require_once('Dao.php');
 
-  <div class="content">  
- <h1>Welcome to the blog page. </h1>
-  <h2>UNI-que is happening</h2>
+if(isset($_POST['username'])) {
+  $currentuser = htmlspecialchars($_POST['username']);
+} else {
+  $currentuser = 'snoopy';
+}
 
-  </div>
+try {
+  $dao = new Dao();
 
-  <h2>Things are happening in Boise &hearts;</h2>
-  <p>
-    Muffin <em>tootsie roll wafer wafer souffl&eacute; sugar plum topping caramels candy canes. Tart oat cake danish.
-    <strong>Candy canes</strong></em> halvah jelly beans gummies. Carrot cake I love sweet cheesecake croissant
-    sugar plum. I love brownie sugar plum candy apple pie cotton candy croissant candy canes sugar
-    plum. Chocolate bar cookie jelly-o brownie cupcake pie bear claw. Jelly pastry dessert wafer gingerbread bear
-    claw ice cream icing. Cheesecake carrot cake tart caramels I love sesame snaps gummi bears cake. I love halvah
-    soufflé cheesecake.
-  </p>
+  # If the username param is set, then filter posts by given username,
+  # else just retrieve all posts from the database.
+  if(isset($_GET['username'])) {
+    $username = htmlspecialchars($_GET['username']);
+    $posts = $dao->filterPostsByKey("username", $username);
+  } else {
+    $posts = $dao->getPostsJoinUserName();
+  }
+} catch (PDOException $e) {
+  echo "<p>Failed to retrieve posts.</p>";
+  die;
+}
+?>
+<html>
+<head>
+  <title>List Posts</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>Posts</h1>
+  <form id="message-filter" action="handler.php" method="GET">
+    <fieldset>
+      <legend>Filter Posts</legend>
+        <label for="username">Filter by (username):</label>
+        <input type="text" id="username" name="username" />
+        <input type="submit" name="filterButton" value="Filter" />
+        <?php if(isset($_GET['username'])) { // only display clear if filter is set ?>
+          <input type="submit" name="clearButton" value="Clear Filter" />
+        <?php } ?>
+        <?php if(isset($_GET['error'])) { ?>
+          <span class="error"><?= $_GET['error'] ?></span>
+        <?php } ?>
+    </fieldset>
+  </form>
 
-  <h3>Things and stuff</h3><br>
-
-  </body>
+  <!-- Message Result Table -->
+  <table>
+    <thead>
+      <tr><th>User</th><th>Username</th><th>Message</th><th>Posted</th><th>Actions</th></tr>
+    </thead>
+    <tbody>
+      <?php foreach($posts as $post) { ?>
+      <tr>
+        <td><?= $post['first_name'] . " " . $post['last_name']; ?></td>
+        <td><?= $post['username'] ?></td>
+        <td><?= $post['message']; ?></td>
+        <td><?= $post['posted']; ?></td>
+        <td>
+         <?php # only show options for current user.
+         if($currentuser == $post['username']) { ?>
+          <form name="postForm" action="handler.php" method="POST">
+            <input type="hidden" name="id" value="<?= $post['id']; ?>">
+            <span>
+              <input type="submit" name="deleteButton" value="Delete">
+              <input type="submit" name="modifyButton" value="Modify">
+            </span>
+          </form>
+         <?php } ?>
+        </td>
+      </tr>
+    <?php } ?>
+    </tbody>
+  </table>
+</body>
 </html>
+
 
 <?php require_once('includes/footer.php'); ?>
