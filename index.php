@@ -25,8 +25,7 @@ function displayError($key) {
 }
 
 /**
- * Clears error data from session when we are done so they don't show
- * up on refresh or if user submits correct info next time around.
+ * Clears error data 
  */
 function clearErrors() {
 	unset($_SESSION['errors']);	
@@ -48,16 +47,15 @@ function clearErrors() {
 		<legend>Registration</legend>
 		<p>
 			<label for="name">User Name:</label>
-			<input type="text" id="name" name="name" maxlength="50" value=<?= $_SESSION['presets']['name'] ?>>
-			<?php displayError('name'); ?>
-
-			
+			<input type="text" id="name" name="name" maxlength="50" <?php preset('name'); ?>>
+			<?php displayError('name'); ?>		
 		</p>
 		<p>
 			<label for="email">Email:</label>
-			<input type="email" id="email" name="email" value=<?= $_SESSION['presets']['email'] ?>>
+			<input type="email" id="email" name="email" <?php preset('email'); ?>>
 			<?php displayError('email'); ?>
 			<?php displayError('userexists'); ?>
+			
 		</p>
 		<p>
 			<label for="password">Password:</label>
