@@ -28,7 +28,7 @@ if(!valid_length($password, 10, 128)) {
 if(empty($errors)) {
   $dao = new Dao(); 
   if($dao->validateUser($email, $password)){
-      header('Location: Welcome.php');     
+      header('Location: welcome.php');     
   } else{ 
       $_SESSION['errors']['userexists'] = "couldn't add";
       header('Location: login.php');
