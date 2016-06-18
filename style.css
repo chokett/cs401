@@ -78,7 +78,7 @@ fieldset{
 }
 
 fieldset > label  {
-  display:block;
+  display:block
   margin-top: 0px;  
 }
 form > input{

@@ -3,14 +3,11 @@ session_start();
 require_once('includes/Dao.php');
 require_once('includes/header.php'); 
 
-if(isset($_SESSION['error'])) {
-	$error = $_SESSION['error'];
-	unset($_SESSION['error']); // clear so gone when page is refreshed.
-}
+
 
 /**
- * Prints preset for given key (if one exists).
- */
+* Prints preset for given key (if one exists).
+*/
 function preset($key) {
 	if(isset($_SESSION['presets'][$key]) && !empty($_SESSION['presets'][$key])) { 
 		echo 'value="' . $_SESSION['presets'][$key] . '" '; 
@@ -19,8 +16,8 @@ function preset($key) {
 
 
 /**
- * Prints error for given key (if one exists).
- */
+* Prints error for given key (if one exists).
+*/
 function displayError($key) {
 	if(isset($_SESSION['errors'][$key])) { ?>
 		<span id="<?= $key . "Error" ?>" class="error"><?= $_SESSION['errors'][$key] ?></span>
@@ -28,8 +25,9 @@ function displayError($key) {
 }
 
 /**
- * Clears error data 
- */
+* Clears error data from session when we are done so they don't show
+* up on refresh or if user submits correct info next time around.
+*/
 function clearErrors() {
 	unset($_SESSION['errors']);	
 	unset($_SESSION['presets']);	
@@ -50,19 +48,20 @@ function clearErrors() {
 		<legend>Registration</legend>
 		<p>
 			<label for="name">User Name:</label>
-			<input type="text" id="name" name="name" maxlength="50" <?php preset('name'); ?>>
-			<?php displayError('name'); ?>		
-		</p>
-		<p>
-			<label for="email">Email:</label>
-			<input type="email" id="email" name="email" <?php preset('email'); ?>>
-			<?php displayError('email'); ?>
-			<?php displayError('userexists'); ?>
+			<input type="text" id="name" name="name" style="display:block" maxlength="50" <?php preset('name'); ?>>
+			<?php displayError('name'); ?>
+
 			
 		</p>
 		<p>
+			<label for="email">Email:</label>
+			<input type="email" id="email" name="email" style="display:block" <?php preset('email'); ?>>
+			<?php displayError('email'); ?>
+			<?php displayError('userexists'); ?>
+		</p>
+		<p>
 			<label for="password">Password:</label>
-			<input type="password" id="password" name="password">
+			<input type="password" id="password" name="password" style="display:block">
 			<?php displayError('password'); ?>
 		<p>
 		<p>
@@ -71,8 +70,11 @@ function clearErrors() {
 			<?php displayError('password_match'); ?>
 		</p>
 		
-        <input type="submit" value="Register">
-  		<input type="button" value="Log In">
+		<input type="submit" value="Register">
+	
+			
+			<a href="login.php">Click here to Login</a>
+
 	</fieldset>
 	</form>
 </div>
@@ -91,63 +93,17 @@ function clearErrors() {
 </div>
 
 <section>
-		<!-- Filter form will just submit to itself. This is okay on a GET request -->
-		<form method="GET">
-			<p>
-				<label>Filter by email:
-				<input type="text" name="email" required>
-				</label>
-				<input type="submit" name="filterButton" value="Filter">
-			</p>
-		</form>
-	</section>
-	
-	<section>
-		<h1>Search Results</h1>
-		<?php
-		// filter results if email parameter is present in URL, otherwise, display
-		// all results.
-		if(isset($_GET['email']))
-		{
-			$email = htmlspecialchars($_GET['email']);
-			try {
-				$dao = new Dao();
-				$results = $dao->getRow($email);
-				printResultTable($results);
-			} catch (PDOException $e) {
-				echo $e->getMessage(); // only print this during development. Don't print in production.
-				echo "<p>Failed to filter data. Please come back later.</p>";
-			}
-		} else {
-			try {
-				$dao = new Dao();
-				$results = $dao->getAllRows();
-				printResultTable($results);
-			} catch (PDOException $e) {
-				echo $e->getMessage(); // only print this during development. Don't print in production.
-				echo "<p>Failed to retrieve data. Please come back later.</p>";
-			}
-		}
-	
-		function printResultTable($rows) {
-			if(!empty($rows)) { ?>
-				<table>
-				<?php foreach($rows as $row) {?>
-					<tr><td><?= $row['email'] ?></td></tr>
-				<?php }?>
-				</table>
-			<?php } else { ?>
-				<p>No results.</p>
-			<?php }
-		}
-		?>
-	</section>
-</body>
-</html>
+	<h3>Search our site</h3>
+	<form id="searchForm" action="search-handler.php">
+		<label for="query">Enter search string:</label>
+		<input type="text" id="query" name="query">
+		<input type="submit">
+	</form>
+</section>
 
 <?php require_once('includes/footer.php');  
 clearErrors(); 
-//session_destroy();
+// session_destroy();
 ?>
 
 

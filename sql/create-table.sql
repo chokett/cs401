@@ -18,9 +18,9 @@ CREATE TABLE users (
 );
 
 -- Use insert to populate the test table
-INSERT INTO users (email, password, name) VALUES('snoopy@doghouse.com', 'w00fWOOF', 'Snoopy', 18);
-INSERT INTO users (email, password, name) VALUES('charliebrown@doghouse.com', 'w00fWOOF', 'Scooby', 23);
-INSERT INTO users (email, password, name) VALUES('lucy@doghouse.com',' iLov3AppleZ','Snow White', 15);
+INSERT INTO users (email, password, name, age) VALUES('snoopy@doghouse.com', 'w00fWOOF', 'Snoopy', 18);
+INSERT INTO users (email, password, name, age) VALUES('charliebrown@doghouse.com', 'w00fWOOF', 'Scooby', 23);
+INSERT INTO users (email, password, name, age) VALUES('lucy@doghouse.com',' iLov3AppleZ','Snow White', 15);
 
 
 CREATE TABLE comments (

@@ -10,7 +10,7 @@
       <li <?php if($thisPage=='Photo Gallery') { echo 'id="currentpage"'; } ?>><a href="gallery.php">Photo Gallery</a></li>
       <li <?php if($thisPage=='Network Community') { echo 'id="currentpage"'; } ?>><a href="community.php">Network Community</a></li>
       <li <?php if($thisPage=='Calendar') { echo 'id="currentpage"'; } ?>><a href="calendar.php">Calendar</a></li>
-	      <li <?php if($thisPage=='About') { echo 'id="currentpage"'; } ?>><a href="about.php">About Us</a></li>
+	  <li <?php if($thisPage=='About') { echo 'id="currentpage"'; } ?>><a href="about.php">About Us</a></li>
     </ul>
 
 </nav>

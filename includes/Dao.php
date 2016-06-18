@@ -1,4 +1,6 @@
 <?php
+
+require_once('includes/password_compat/lib/password.php');
 /**
  * Data Access Object (DAO) class. Contains all DB access code.
  * $dao = new Dao();
@@ -32,6 +34,14 @@ class Dao
 		
 	}
 
+	public function getUser($username)
+	{
+		$conn = $this->getConnection();
+		$stmt = $conn->prepare("SELECT * FROM users WHERE username = :name");
+		$stmt->bindParam(":name", $username);
+		$stmt->execute();
+		return $stmt->fetch();
+	}
 	
 	public function userExists($email)
 	{
@@ -47,16 +57,21 @@ class Dao
 		}
 	}
 
-
 	public function addUser($email, $password, $name)
 	{
+		
+		$digest = password_hash($password, PASSWORD_DEFAULT);
+		if(!$digest){
+			throw new Exception("Password could not be hashed.");
+		}
+
 		$conn = $this->getConnection();
 		$query = "INSERT INTO users (email, password, name) 
 				  VALUES (:email, :password, :name)";
 		
 		$stmt = $conn->prepare($query);		
 		$stmt->bindParam(':email', $email);
-		$stmt->bindParam(':password', $password);
+		$stmt->bindParam(':password', $digest);
 		$stmt->bindParam(':name', $name);
 
 		try{
@@ -64,11 +79,29 @@ class Dao
 			return true;
 		} catch(PDOException $e) {
 			echo $e->getMessage();
-
 			return false;
 		}
 	}
  
+	public function validateUser($email, $password) {
+
+		$digest = password_hash($password, PASSWORD_DEFAULT);
+		if(!$digest){
+			throw new Exception("Password could not be hashed.");
+		}
+		$conn = $this->getConnection();
+		$stmt = $conn->prepare("SELECT password FROM users 
+								WHERE email = :email");
+		$stmt->bindParam(':email', $email);
+		$stmt->execute();
+
+		$row = $stmt->fetch();
+		$digist = $row['password'];
+
+		return password_verify($password, $digest);	
+	}
+
+
 	/**
 	 * Returns all rows in the test table. No user input.
 	 */
@@ -125,20 +158,6 @@ class Dao
 		return $stmt->fetchAll();
 	}
 
-	/**
-	 * Adds a row with email column equal to the given email.
-	 * Accepts user input. DON'T DO THIS!!
-	 */
-	public function addRowBAD($email)
-	{
-		$conn = $this->getConnection();
-
-		// This is BAD. Never insert user input directly into a query
-		// string. Try passing in "'; DROP TABLE test; --" as the $email
-		// parameter and see what happens.
-		// exec returns the number of rows affected.
-		$count = $conn->exec("INSERT INTO test (email) VALUES ('$email')");
-	}
 
 	/**
 	 * Adds a row to the test table with the given email attribute (aka column).
@@ -163,5 +182,92 @@ class Dao
 		// Finally, execute the statement.
 		$stmt->execute();
 	}
+
+
+	public function getUsernameList()
+	{
+		$conn = $this->getConnection();
+		$stmt = $conn->query("SELECT username FROM users");
+		return $stmt->fetchAll();
+	}
+
+
+	public function saveComment ($comment) {
+    $conn = $this->getConnection();
+    $saveQuery =
+        "INSERT INTO comments
+        (comment)
+        VALUES
+        (:comment)";
+    $q = $conn->prepare($saveQuery);
+    $q->bindParam(":comment", $comment);
+    $q->execute();
+  }
+
+
+ 	public function getComments () {
+    	$conn = $this->getConnection();
+    return $conn->query("SELECT * FROM comments");
+  	}
+
+
+  	public function filterPostsByKey($key, $value)
+	{
+		$conn = $this->getConnection();
+		$stmt = $conn->prepare("SELECT u.first_name, u.last_name, u.username, p.message, p.posted
+							FROM posts AS p JOIN users AS u ON p.user_id = u.id
+							WHERE $key = :value");
+		$stmt->bindParam(":value", $value);
+		$stmt->execute();
+		return $stmt;
+	}
+
+	public function getPostsJoinUserName() {
+		$conn = $this->getConnection();
+		return $conn->query("SELECT u.first_name, u.last_name, u.username, p.id, p.message, p.posted
+						 FROM posts AS p JOIN users AS u ON p.user_id = u.id");
+	}
+
+	public function getPosts()
+	{
+		$conn = $this->getConnection();
+		return $conn->query("SELECT * FROM posts");
+	}
+
+	public function addPost($username, $message)
+	{
+		$user = $this->getUser($username); 	
+		if($user) {
+			$user_id = $user['id'];
+			$conn = $this->getConnection();
+			$stmt = $conn->prepare("INSERT INTO posts (user_id, message)
+									 VALUES (:user_id, :message)");
+			$stmt->bindParam(":user_id", $user_id);
+			$stmt->bindParam(":message", $message);
+			$stmt->execute();
+		} else {
+			throw new Exception("Invalid user. $username");
+		}
+	}
+
+	public function deletePostById($id)
+	{
+		$conn = $this->getConnection();
+		$stmt = $conn->prepare("DELETE FROM posts WHERE id = :id");
+		$stmt->bindParam(":id", $id);
+		$stmt->execute();
+	}
+
+	public function updatePost($id, $message)
+	{
+		$conn = $this->getConnection();
+		$stmt = $conn->prepare("UPDATE posts SET message = :message WHERE id = :id");
+		$stmt->bindParam(":message", $message);
+		$stmt->bindParam(":id", $id);
+		$stmt->execute();
+	}
+
 }
+
+
 ?>
