@@ -2,6 +2,7 @@
 session_start();
 require_once('includes/Dao.php');
 require_once('includes/form_helper.php');
+require_once('includes/session_helper.php');
 
 
 $name = htmlspecialchars($_POST['name']);
@@ -27,30 +28,35 @@ if(!valid_length($password, 10, 128)) {
 	$errors['password_match'] = "Passwords do not match.";
 }
 
+$presets = ['email' => htmlspecialchars($email)];
 
 
 if(empty($errors)) {
-	$dao = new Dao();	
-	if($dao->userExists($email)){
-		$_SESSION['errors']['userexists'] = "Email already exists";
-		header('Location: index.php');
-	} 
-	else {
-		if($dao->addUser($email, $password, $name)){
-			$_SESSION['user'] = htmlspecialchars($name);
-			header('Location: welcome.php');
-		} 
-		else{	
-			$_SESSION['errors']['userexists'] = "couldn't add";
+	try {
+		$dao = new Dao();	
+		if($dao->userExists($email)){
+			$_SESSION['errors']['userexists'] = "Email already exists";
 			header('Location: index.php');
-		}
-	}	
+		} 
+		else {
+			if($dao->addUser($email, $password, $name)){
+					 $user = $dao->validateUser($email, $password);
+					 $_SESSION['user'] = htmlspecialchars($name);
+					loginUser($user);
+					redirectSuccess("welcome.php");
+			} 
+			else{	
+				redirectError("index.php", $errors, $presets);
+			}
+		}	
+	} catch (Exception $e) {
+    echo $e->getMessage();
+    $errors['message'] = "Contact support or come back later";
+    redirectError("login.php", $errors, $presets);
+  }
 }
 else{
-	$_SESSION['errors'] = $errors;
-	$_SESSION['presets'] = array('name' => htmlspecialchars($name),
-					'email' => htmlspecialchars($email));			
-	header('Location: index.php');
+	redirectError("index.php", $errors, $presets);
 
 }
 
