@@ -1,7 +1,15 @@
-<?php $thisPage = 'Network Community'; ?>
-<?php require_once('includes/header.php'); ?>
-<?php require_once('includes/navigation.php'); ?> 
-<?php require_once ('includes/Dao.php'); ?>
+<?php $thisPage = 'Network Community'; 
+session_start(); 
+require_once('includes/form_helper.php');
+require_once('includes/session_helper.php');
+if(!isAccessGranted()) {
+	$errors['message'] = "You must login to access page.";
+	redirectError("login.php", $errors);
+}  
+require_once('includes/header.php'); 
+require_once('includes/navigation.php'); 
+require_once ('includes/Dao.php'); 
+?>
   
 
 

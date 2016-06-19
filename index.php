@@ -2,38 +2,12 @@
 session_start();
 require_once('includes/Dao.php');
 require_once('includes/header.php'); 
+require_once('includes/form_helper.php');
 
-
-
-/**
-* Prints preset for given key (if one exists).
-*/
-function preset($key) {
-	if(isset($_SESSION['presets'][$key]) && !empty($_SESSION['presets'][$key])) { 
-		echo 'value="' . $_SESSION['presets'][$key] . '" '; 
-	}
-}
-
-
-/**
-* Prints error for given key (if one exists).
-*/
-function displayError($key) {
-	if(isset($_SESSION['errors'][$key])) { ?>
-		<span id="<?= $key . "Error" ?>" class="error"><?= $_SESSION['errors'][$key] ?></span>
-	<?php }
-}
-
-/**
-* Clears error data from session when we are done so they don't show
-* up on refresh or if user submits correct info next time around.
-*/
-function clearErrors() {
-	unset($_SESSION['errors']);	
-	unset($_SESSION['presets']);	
-}
 
 ?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,30 +17,30 @@ function clearErrors() {
 
 <section>
 <div id="regform">
-	<form method="POST" action="registration-handler.php" autocomplete="off">
+	<form method="POST" action="registration_handler.php" autocomplete="off">
 	<fieldset>
 		<legend>Registration</legend>
 		<p>
 			<label for="name">User Name:</label>
-			<input type="text" id="name" name="name" style="display:block" maxlength="50" <?php preset('name'); ?>>
+			<input type="text" id="name" name="name" style="display:block" size="25" maxlength="50" <?php preset('name'); ?>>
 			<?php displayError('name'); ?>
 
 			
 		</p>
 		<p>
 			<label for="email">Email:</label>
-			<input type="email" id="email" name="email" style="display:block" <?php preset('email'); ?>>
+			<input type="email" id="email" name="email" style="display:block"size="25"  <?php preset('email'); ?>>
 			<?php displayError('email'); ?>
 			<?php displayError('userexists'); ?>
 		</p>
 		<p>
 			<label for="password">Password:</label>
-			<input type="password" id="password" name="password" style="display:block">
+			<input type="password" id="password" name="password" size="25"  style="display:block">
 			<?php displayError('password'); ?>
 		<p>
 		<p>
-			<label for="password_match" style="display:block" required>Password again:</label>
-			<input type="password" id="password_match" name="password_match">
+			<label for="password_match"  style="display:block" required>Password again:</label>
+			<input type="password" id="password_match" size="25" name="password_match">
 			<?php displayError('password_match'); ?>
 		</p>
 		
@@ -103,7 +77,7 @@ function clearErrors() {
 
 <?php require_once('includes/footer.php');  
 clearErrors(); 
-// session_destroy();
+session_destroy();
 ?>
 
 

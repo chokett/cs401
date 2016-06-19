@@ -86,20 +86,22 @@ class Dao
 	public function validateUser($email, $password) {
 
 		$digest = password_hash($password, PASSWORD_DEFAULT);
-		if(!$digest){
-			throw new Exception("Password could not be hashed.");
-		}
+		
 		$conn = $this->getConnection();
-		$stmt = $conn->prepare("SELECT password FROM users 
+		$stmt = $conn->prepare("SELECT id, password, name FROM users 
 								WHERE email = :email");
 		$stmt->bindParam(':email', $email);
 		$stmt->execute();
-
-		$row = $stmt->fetch();
-		$digist = $row['password'];
-
-		return password_verify($password, $digest);	
+ 
+		if($user = $stmt->fetch()) {
+			$digest = $user['password'];
+			if(password_verify($password, $digest)){
+				return array('name' => $user['name'], 'id' => $user['id']);
+			}
+		}
+		return false;
 	}
+
 
 
 	/**

@@ -1,5 +1,7 @@
 <?php
-require_once "Dao.php";
+session_start();
+require_once ('includes/Dao.php');
+require_once('includes/form_helper.php');
 
 # Used to send messages back to posts.php. Better to use sessions though.
 $queryParams = "";

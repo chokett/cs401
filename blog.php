@@ -1,8 +1,15 @@
-<?php $thisPage = 'Blog'; ?>
-<?php require_once('includes/header.php'); ?>
-<?php require_once('includes/navigation.php'); ?> 
-<?php
-require_once('Dao.php');
+<?php $thisPage = 'Blog'; 
+session_start();
+require_once('includes/form_helper.php');
+require_once('includes/session_helper.php');
+if(!isAccessGranted()) {
+	$errors['message'] = "You must login to access page.";
+	redirectError("login.php", $errors);
+}  
+require_once('includes/header.php'); 
+require_once('includes/navigation.php');  
+require_once('includes/Dao.php');
+
 
 if(isset($_POST['username'])) {
   $currentuser = htmlspecialchars($_POST['username']);

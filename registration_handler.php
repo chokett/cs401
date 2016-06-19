@@ -1,7 +1,7 @@
 <?php 
 session_start();
 require_once('includes/Dao.php');
-
+require_once('includes/form_helper.php');
 
 
 $name = htmlspecialchars($_POST['name']);
@@ -27,10 +27,6 @@ if(!valid_length($password, 10, 128)) {
 	$errors['password_match'] = "Passwords do not match.";
 }
 
-function valid_length($field, $min, $max) {
-	$trimmed = trim($field);
-	return (strlen($trimmed) >= $min && strlen($trimmed) <= $max);
-}
 
 
 if(empty($errors)) {

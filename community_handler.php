@@ -1,7 +1,8 @@
 <?php
-// handler.php
-// handle comment posts, saving to MySQL and redirecting back to the list
-require_once "Dao.php";
+require_once('includes/form_helper.php');
+require_once "includes/Dao.php";
+
+session_start();
 
 if (isset($_POST["commentButton"])) {
   # We want to clean up this comment before inserting into the database.

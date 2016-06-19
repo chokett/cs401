@@ -1,4 +1,6 @@
 <?php
+require_once('includes/form_helper.php');
+session_start();
 $query = $_GET['query'];
 $result = searchFile($query))
 if($result == TRUE){
