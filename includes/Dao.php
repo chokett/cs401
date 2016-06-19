@@ -1,6 +1,6 @@
 <?php
 
-
+require_once('includes/password_compat/lib/password.php');
 /**
  * Data Access Object (DAO) class. Contains all DB access code.
  * $dao = new Dao();
