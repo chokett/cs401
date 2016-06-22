@@ -10,18 +10,12 @@ require_once('includes/header.php');
 require_once('includes/navigation.php'); 
 require_once ('includes/Dao.php'); 
 ?>
-  
 
-
-	<h1>Welcome to the Network Community page.</h1>
-	
-	<h2>UNI-que member community &hearts;</h2>
-	<p>
 	<html>
-  <head>
-    <title>List of Comments</title>
-  </head>
+
   <body>
+    <div class = "content">
+    <h1>Welcome to the Network Community page. &hearts;</h1>
     <form name="commentForm" action="community_handler.php" method="POST">
       <div>
         <label for="comment">Leave a comment:</label>
@@ -32,8 +26,10 @@ require_once ('includes/Dao.php');
       </div>
     </form>
     <?php
+    $dao = new Dao();
     $comments = $dao->getComments();
     if ($comments) { ?>
+    <div class ="comment">
     <table>
     <?php foreach ($comments as $comment) { ?>
       <tr>
@@ -43,10 +39,7 @@ require_once ('includes/Dao.php');
     <?php } ?>
     </table>
     <?php } ?>
+    </div>
   </body>
 </html>
-	</p>
-
-	<h3>Things and stuff</h3>
-</div>
   <?php require_once('includes/footer.php'); ?>

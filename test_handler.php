@@ -5,9 +5,7 @@ unset($_SESSION['error']);
 require_once('Dao.php');
 if(isset($_POST['email']))
 {
-	// This is to demonstrate database access. You still need to add your
-	// server-side validation and sanitization. Try passing <h1>HAHA</h1>
-	// into the Add email field. Watch what happens.
+	
 	$email = $_POST['email'];
 	try {
 		$dao = new Dao();

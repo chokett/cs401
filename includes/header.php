@@ -1,3 +1,9 @@
+<?php
+require_once('includes/session_helper.php');
+if(session_status() === PHP_SESSION_NONE) {
+	session_start();
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,13 +19,20 @@
 
 </head>
  
-    	<div id="header">
+   <div id="header">
 	<table style="position: relative; top: -0px; left: 0px;">	
 	<tr>
 		<div class="logo">
-				<td><a href='index.php'><img src="images/icon2.png" alt="UNI-logo"></td>
+				<td><a href='welcome.php'><img src="images/icon2.png" alt="UNI-logo"></td>
 			</div>
-		
+		<aside id="user-actions" class="flaoting-btn">
+			<?php if(isAccessGranted()){ ?>
+				<a href="logout.php">Logout</a>
+				<?php } else { ?>
+				<a href="login.php">Sign In</a>
+				<?php } ?>
+			</aside>	
+			
 			<div class="text">
 			<td><h1>UNI-que Networking Interactive</h1></td>
 			</div> 

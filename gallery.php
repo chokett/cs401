@@ -9,12 +9,29 @@ if(!isAccessGranted()) {
 }  
 require_once('includes/header.php');  
 require_once('includes/navigation.php'); 
+include('UberGallery/resources/UberGallery.php');
 ?>
 
-<div class="content">
-<h1>Welcome to our photo gallery. </h1>
-</div>
 
+<div class="content">
+<head>
+
+ <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+  </head>
+
+<h1>Welcome to our photo gallery. </h1>
+</div> 
+<?php
+    // Initialize the UberGallery object
+$gallery = new UberGallery();
+$gallery = UberGallery::init()->createGallery('/Users/chokett98/Documents/repos/401repo/UberGallery/gallery-images'); 
+    // Initialize the gallery array
+    $galleryArray = $gallery->readImageDirectory('/Users/chokett98/Documents/repos/401repo/UberGallery/gallery-images');
+
+
+
+?>
 <div class="forms">
 <?php if($_SERVER['REQUEST_METHOD'] == "POST") {
   # Print all values received in the POST array
@@ -31,7 +48,7 @@ require_once('includes/navigation.php');
   $imagepath = $upload_dir . "/" . $picture_file['name'];
   if(is_uploaded_file($picture_file['tmp_name'])) {
     move_uploaded_file($picture_file['tmp_name'], "$imagepath"); ?>
-    <img src="<?= $imagepath; ?>" alt="user image" />
+    <img src="<?= $imagepath; ?>" alt="user image" style="display:block"/>
 <?php
   }
 } else { ?>
@@ -55,7 +72,8 @@ require_once('includes/navigation.php');
 
   </form>
 <?php } ?>
-</div>  
+</div> 
+
 
 <?php require_once('includes/footer.php'); ?>
 

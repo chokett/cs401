@@ -19,10 +19,7 @@ function displayError($key) {
 	<?php }
 }
 
-/**
- * Clears error data from session when we are done so they don't show
- * up on refresh or if user submits correct info next time around.
- */
+
 function clearErrors() {
 	unset($_SESSION['errors']);	
 	unset($_SESSION['presets']);	
